@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portfolio — Léo Techer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f6f7fb;
+    --glass: rgba(255,255,255,0.65);
+    --stroke: rgba(15,23,42,.08);
+    --text: #0f172a;
+    --muted: #6b7280;
+    --primary: #4f46e5;
+    --primary-2: #7c3aed;
+    --primary-3: #06b6d4;
+    --accent: #22c55e;
+    --danger: #ef4444;
+    --shadow: 0 8px 30px rgba(2, 6, 23, .08);
+    --shadow-lg: 0 20px 60px rgba(2, 6, 23, .12);
+    --radius: 14px;
+    --radius-lg: 22px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--text);
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:
+      radial-gradient(1000px 600px at 5% -10%, rgba(79,70,229,.12), transparent 60%),
+      radial-gradient(900px 580px at 95% 0%, rgba(124,58,237,.12), transparent 60%),
+      linear-gradient(180deg, #ffffff, #eef2ff 30%, #f6f7fb 60%);
+    min-height:100vh;
+  }
+
+  /* ======= NAV flottant ======= */
+  .site-header{ position:sticky; top:12px; z-index:1000; display:flex; justify-content:center; padding:0 12px; transform:translateY(-120%); opacity:0; animation:navDrop .55s ease forwards }
+  @keyframes navDrop{to{transform:translateY(0);opacity:1}}
+  .nav-shell{ width:100%; max-width:1160px; position:relative; border-radius:20px; padding:2px; background:linear-gradient(120deg, rgba(79,70,229,.8), rgba(124,58,237,.8), rgba(6,182,212,.8)); box-shadow:0 14px 40px rgba(2,6,23,.18) }
+  .nav-wrap{ display:flex; align-items:center; justify-content:space-between; gap:12px; border-radius:18px; background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.66)); border:1px solid rgba(15,23,42,.06); backdrop-filter:saturate(140%) blur(14px); padding:10px 14px }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; padding:6px 8px; border-radius:12px }
+  .logo{ width:40px; height:40px; border-radius:12px; background:conic-gradient(from 180deg, var(--primary), var(--primary-2), var(--primary-3), var(--primary)); display:grid; place-items:center; color:#fff; font-weight:900; letter-spacing:.4px; box-shadow:var(--shadow) }
+  .brand small{ color:var(--muted); font-weight:600 }
+  .nav{ position:relative; display:flex; align-items:center; gap:4px; padding:4px; border-radius:12px; background:rgba(2,6,23,.04) }
+  .nav a{ position:relative; text-decoration:none; color:#334155; font-weight:700; padding:10px 12px; border-radius:10px; transition:color .2s }
+  .nav a:hover{ color:#0f172a } .nav a.is-active{ color:#0f172a }
+  .nav-indicator{ position:absolute; top:4px; height:36px; border-radius:10px; z-index:0; background:linear-gradient(90deg, rgba(79,70,229,.14), rgba(124,58,237,.14)); border:1px solid rgba(79,70,229,.22); box-shadow:0 6px 18px rgba(79,70,229,.18); transition:left .25s ease, width .25s ease, opacity .2s ease; opacity:0 }
+  .nav-toggle{ display:none; width:44px; height:40px; border:none; border-radius:12px; background:rgba(2,6,23,.08); position:relative; cursor:pointer }
+  .nav-toggle span{ position:absolute; left:11px; right:11px; height:2px; background:#0f172a; border-radius:2px; transition:.25s }
+  .nav-toggle span:nth-child(1){ top:11px } .nav-toggle span:nth-child(2){ top:19px } .nav-toggle span:nth-child(3){ top:27px }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){ top:19px; transform:rotate(45deg) }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0 }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){ top:19px; transform:rotate(-45deg) }
+  @media (max-width:960px){
+    .nav{ position:fixed; inset:auto 12px 12px 12px; top:74px; display:grid; grid-template-columns:1fr; gap:6px; padding:10px; background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.92)); border:1px solid rgba(15,23,42,.08); border-radius:16px; box-shadow:var(--shadow-lg); max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease }
+    .nav.open{ max-height:360px; padding:12px } .nav-indicator{ display:none } .nav-toggle{ display:block }
+  }
+
+  /* ===== Layout commun ===== */
+  main{ max-width:1120px; margin:0 auto; padding:28px 20px 60px }
+  section{ margin:34px 0; padding:22px; border-radius: var(--radius-lg); background: var(--glass); border: 1px solid var(--stroke); box-shadow: var(--shadow); opacity:0; transform: translateY(16px) scale(.98); transition:.6s ease }
+  section.visible{ opacity:1; transform: translateY(0) scale(1) }
+  h1,h2{ margin:0 0 10px; line-height:1.15 }
+  h1{ font-size: clamp(26px, 3.6vw, 36px) } h2{ font-size: clamp(22px, 3vw, 28px) }
+  p,li{ color:var(--muted) }
+
+  /* Cartes / communes */
+  .card{ background:#fff; border:1px solid var(--stroke); border-radius: var(--radius); box-shadow: var(--shadow); padding:16px }
+
+  /* ========== PROFIL — design amélioré (déjà intégré) ========== */
+  .profile-hero{ display:grid; grid-template-columns: 120px 1fr auto; gap:16px; align-items:center; padding:16px; border-radius:18px; background:linear-gradient(180deg,#ffffff 40%, #f8faff); border:1px solid var(--stroke); box-shadow: var(--shadow) }
+  @media (max-width:760px){ .profile-hero{ grid-template-columns:80px 1fr } .profile-hero .actions{ grid-column:1/-1 } }
+  .avatar{ width:120px; height:120px; border-radius:18px; overflow:hidden; position:relative; border:1px solid var(--stroke); background:linear-gradient(135deg,#e5e7eb,#ffffff); display:grid; place-items:center; font-weight:900; color:#334155 }
+  .avatar::after{ content:""; position:absolute; inset:-2px; border-radius:20px; padding:2px; background:conic-gradient(from 200deg, var(--primary), var(--primary-2), var(--primary-3), var(--primary)); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none }
+  .id h3{ margin:0; font-size:clamp(20px,2.6vw,26px) }
+  .id .sub{ color:#64748b; font-weight:600 }
+  .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px }
+  .tag{ padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; color:#0f172a; background:#eef2ff; border:1px solid var(--stroke) }
+  .actions{ display:flex; gap:8px; align-items:center }
+  .btn{ padding:10px 14px; border:none; border-radius:12px; color:#fff; font-weight:800; cursor:pointer }
+  .btn.primary{ background:linear-gradient(90deg, var(--primary), var(--primary-2)) }
+  .btn.ghost{ background:#fff; color:#0f172a; border:1px solid var(--stroke) }
+
+  .profile-panels{ display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:16px; margin-top:16px }
+  @media (max-width:980px){ .profile-panels{ grid-template-columns:1fr } }
+  .skills{ display:grid; gap:10px }
+  .skill{ background:#fff; border:1px solid var(--stroke); border-radius:12px; padding:10px 12px }
+  .skill .row{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:6px; color:#334155; font-weight:800 }
+  .bar{ position:relative; height:10px; background:#f1f5f9; border:1px solid var(--stroke); border-radius:999px; overflow:hidden }
+  .bar .fill{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--primary), var(--primary-2), var(--primary-3)); box-shadow:0 6px 16px rgba(79,70,229,.25); animation:grow 1.1s cubic-bezier(.2,.7,.2,1) forwards }
+  @keyframes grow{ from{width:0%} to{width:var(--val)} }
+  .mini-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+  .mini{ background:#fff; border:1px solid var(--stroke); border-radius:12px; padding:10px 12px }
+  .mini b{ font-size:18px } .mini small{ color:#64748b }
+
+  .chip{ background:#f1f5f9; color:#0f172a; padding:6px 10px; border-radius:10px; border:1px solid var(--stroke); font-size:12px }
+  .badge{ background:linear-gradient(90deg, var(--primary), var(--primary-2)); color:white; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700 }
+
+  /* ===== BTS / CV / Stages / Certifs / Contact ===== */
+  .tabbar{ display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 10px }
+  .tab{ padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:#fff; cursor:pointer; font-weight:700; color:#334155 }
+  .tab.active{ color:#fff; background:linear-gradient(90deg, var(--primary), var(--primary-2)); border-color:transparent }
+  .bts-grid{ display:grid; grid-template-columns: 1.05fr 1fr; gap:16px } @media (max-width:900px){ .bts-grid{ grid-template-columns:1fr } }
+  .track[data-open="false"]{ display:none }
+  .pill{ display:inline-block; padding:6px 10px; background:#eef2ff; color:#3730a3; border-radius:999px; font-size:12px; border:1px solid var(--stroke) }
+
+  .cv-toggle{ display:inline-flex; align-items:center; gap:8px; border:none; background: linear-gradient(90deg, var(--primary), var(--primary-2)); color:#fff; font-weight:800; padding:10px 14px; border-radius:12px; cursor:pointer; box-shadow:var(--shadow) }
+  #cvContainer{ max-height:0; overflow:hidden; transition:max-height .7s ease }
+
+  .stage-acc summary{ list-style:none; cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:#0ea5e9; color:#fff; font-weight:800; border:none; box-shadow: var(--shadow) }
+  .stage-acc summary::-webkit-details-marker{ display:none }
+  .stage-acc[open] summary{ background:#22c55e }
+  .gallery{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:10px 0 }
+  @media (max-width:800px){ .gallery{ grid-template-columns:repeat(2,1fr) } } @media (max-width:520px){ .gallery{ grid-template-columns:1fr } }
+  .gallery img{ width:100%; height:180px; object-fit:cover; border-radius:12px; border:1px solid var(--stroke); box-shadow: var(--shadow); cursor:zoom-in; transition: transform .2s, box-shadow .2s }
+  .gallery img:hover{ transform: translateY(-2px); box-shadow: var(--shadow-lg) }
+  .lb{ position:fixed; inset:0; z-index:1400; display:none; background:rgba(15,23,42,.6); backdrop-filter: blur(2px); align-items:center; justify-content:center; padding:26px }
+  .lb.open{ display:flex } .lb img{ max-width:min(1080px,92vw); max-height:82vh; border-radius:14px; background:#fff; box-shadow:var(--shadow-lg); border:1px solid var(--stroke) }
+  .lb-close{ position:absolute; top:16px; right:16px; padding:8px 12px; border-radius:10px; border:1px solid var(--stroke); background:#fff; cursor:pointer; font-weight:800; box-shadow: var(--shadow) }
+
+  .cert-toolbar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px }
+  .cert-filter{ padding:8px 12px; border-radius:10px; border:1px solid var(--stroke); background:#fff; font-weight:800; color:#334155; cursor:pointer }
+  .cert-filter.active{ color:#fff; background:linear-gradient(90deg, var(--primary), var(--primary-2)); border-color:transparent }
+  .cert-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px } @media (max-width:980px){ .cert-grid{ grid-template-columns:repeat(2,1fr) } } @media (max-width:620px){ .cert-grid{ grid-template-columns:1fr } }
+  .cert-card{ position:relative; background:#fff; border:1px solid var(--stroke); border-radius:12px; box-shadow:var(--shadow); padding:14px }
+  .cert-head{ display:flex; gap:12px; align-items:center }
+  .cert-logo{ width:46px; height:46px; border-radius:10px; overflow:hidden; border:1px solid var(--stroke); background:#f8fafc; display:grid; place-items:center }
+  .cert-title{ font-weight:900 } .cert-issuer{ font-size:12px; color:var(--muted) }
+  .ctag{ font-size:11px; padding:6px 8px; border-radius:999px; background:#eef2ff; color:#3730a3; border:1px solid var(--stroke) }
+  .cert-tags{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 }
+  .cert-ribbon{ position:absolute; top:12px; right:12px; font-size:11px; font-weight:900; padding:6px 10px; border-radius:999px; color:#0f172a; background:#bbf7d0; border:1px solid var(--stroke) }
+  .cert-ribbon.pending{ background:#fde68a }
+  .cert-foot{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:8px }
+  .cert-btn{ padding:8px 12px; border:none; border-radius:10px; background:linear-gradient(90deg, var(--primary), var(--primary-2)); color:#fff; font-weight:800; cursor:pointer }
+  .cert-body{ display:none; color:#334155; font-size:14px } .cert-card[aria-expanded="true"] .cert-body{ display:block }
+
+  .contact-grid{ display:grid; grid-template-columns:1fr 1.05fr; gap:16px } @media (max-width:900px){ .contact-grid{ grid-template-columns:1fr } }
+  .field{ position:relative; margin:12px 0 }
+  .field input,.field textarea{ width:100%; padding:14px 12px; border-radius:12px; border:1px solid var(--stroke); outline:none; background:#fff; color:var(--text); transition:box-shadow .2s, border-color .2s }
+  .field input:focus,.field textarea:focus{ border-color:var(--primary); box-shadow: 0 0 0 4px rgba(79,70,229,.15) }
+  .field label{ position:absolute; left:12px; top:12px; color:var(--muted); background:#fff; padding:0 6px; border-radius:8px; transition:.15s; pointer-events:none }
+  .field input:focus+label, .field input:not(:placeholder-shown)+label, .field textarea:focus+label, .field textarea:not(:placeholder-shown)+label{ top:-8px; font-size:12px; color:var(--primary) }
+  .error{ display:none; color:var(--danger); font-size:12px; margin-top:6px }
+  .invalid{ border-color:var(--danger) !important; box-shadow:none !important }
+  .success{ margin-top:10px; padding:12px; border-radius:12px; border:1px solid var(--stroke); background:#ecfeff; color:#155e75; display:none }
+  .success.show{ display:block }
+  footer{ text-align:center; color:var(--muted); padding:32px 0 10px }
+
+  /* ===== INTRO — VERSION CLAIRE ===== */
+  .intro{
+    position:fixed; inset:0; z-index:3000; display:grid; place-items:center; overflow:hidden;
+    background:
+      radial-gradient(1400px 900px at 10% -10%, rgba(99,102,241,.12), transparent 60%),
+      radial-gradient(1200px 800px at 90% 0%, rgba(168,85,247,.12), transparent 60%),
+      linear-gradient(180deg, #ffffff, #f7f9ff 40%, #eef2ff);
+    transition: opacity .75s ease, transform .75s ease, visibility .75s ease;
+    border-bottom:1px solid rgba(15,23,42,.04);
+  }
+  .intro.hide{ opacity:0; transform:scale(.98); visibility:hidden }
+
+  .intro .particles{ position:absolute; inset:0; pointer-events:none }
+  .intro .dot{
+    position:absolute; width:7px; height:7px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(15,23,42,.8), rgba(15,23,42,.15));
+    opacity:0; animation: floatY linear infinite;
+    box-shadow: 0 6px 18px rgba(15,23,42,.08);
+  }
+  .intro .dot.p1{ background: radial-gradient(circle at 30% 30%, rgba(79,70,229,.9), rgba(79,70,229,.2)) }
+  .intro .dot.p2{ background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(124,58,237,.2)) }
+  .intro .dot.p3{ background: radial-gradient(circle at 30% 30%, rgba(6,182,212,.9), rgba(6,182,212,.2)) }
+  @keyframes floatY{
+    0%{ transform: translateY(110vh) translateX(0) scale(.8); opacity:0 }
+    10%{ opacity:.7 }
+    100%{ transform: translateY(-10vh) translateX(var(--dx)) scale(1); opacity:0 }
+  }
+
+  .intro-inner{ position:relative; text-align:center; padding:20px; color:#0f172a }
+  .intro-name{
+    font-weight:900; margin:8px 0;
+    font-size: clamp(34px, 8.5vw, 92px);
+    letter-spacing:.6px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter: drop-shadow(0 10px 30px rgba(59,130,246,.18));
+    transform: translateY(22px) scale(.98);
+    opacity:0; animation: revealUp .85s cubic-bezier(.2,.7,.2,1) .15s forwards;
+  }
+  @keyframes revealUp{
+    0%{ opacity:0; transform: translateY(22px) scale(.98) }
+    60%{ opacity:1; transform: translateY(0) scale(1.02) }
+    100%{ opacity:1; transform: translateY(0) scale(1) }
+  }
+  .intro-role{
+    font-size: clamp(16px, 2.6vw, 22px); color:#334155; opacity:0; transform: translateY(8px);
+    animation: roleIn .6s ease .55s forwards;
+  }
+  @keyframes roleIn{ to{ opacity:1; transform: translateY(0) } }
+  .intro-type{
+    margin:10px auto 0; width:max-content; font-weight:900; letter-spacing:6px;
+    font-size: clamp(12px, 2.2vw, 16px); color:#0f172a;
+    border-right: 2px solid #0f172a;
+    white-space:nowrap; overflow:hidden;
+    animation: typing 1.9s steps(10,end) .8s forwards, caret .8s steps(1,end) infinite;
+  }
+  @keyframes typing{ from{ width:0 } to{ width: 11ch } }
+  @keyframes caret{ 0%,100%{ border-right-color:transparent } 50%{ border-right-color:#0f172a } }
+
+  .intro-progress{
+    position:relative; width:min(360px, 72vw); height:8px; margin:18px auto 0;
+    background: rgba(2,6,23,.06); border-radius:999px; overflow:hidden;
+    border:1px solid rgba(2,6,23,.08);
+  }
+  .intro-progress .bar{
+    position:absolute; inset:0 auto 0 0; width:0%;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa, #22d3ee);
+    box-shadow:0 6px 20px rgba(59,130,246,.2);
+    animation: load 2.1s ease .6s forwards;
+  }
+  @keyframes load{ to{ width:100% } }
+
+  .intro-sheen{
+    position:absolute; inset: 0 -30% 0 -30%;
+    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.6) 35%, transparent 70%);
+    transform: translateX(-60%) skewX(-14deg);
+    animation: sheen 2.2s ease .5s forwards;
+    pointer-events:none;
+    mix-blend-mode: screen;
+  }
+  .intro-skip{
+    position:absolute; right:16px; top:14px; padding:8px 12px; border:none; border-radius:10px; cursor:pointer;
+    background:#ffffff; color:#0f172a; font-weight:700; box-shadow:var(--shadow); border:1px solid rgba(2,6,23,.08)
+  }
+
+  /* ===== ÉPREUVE — E5 / E6 (style intégré au thème clair) ===== */
+  .exam{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:var(--shadow);padding:16px}
+  .exam-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;background:#f8fafc;border:1px solid var(--stroke);border-radius:12px;padding:6px}
+  .exam-tab{border:none;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;color:#334155;background:#fff;border:1px solid var(--stroke)}
+  .exam-tab.active{color:#fff;background:linear-gradient(90deg,var(--primary),var(--primary-2));border-color:transparent}
+  .exam-panel[hidden]{display:none}
+  .exam-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8faff);border:1px solid var(--stroke)}
+  .exam-title{margin:0;font-size:clamp(18px,2.6vw,22px)}
+  .exam-badges{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  .badge-pill{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#0f172a;background:#eef2ff;border:1px solid var(--stroke)}
+  .exam-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
+  @media(max-width:900px){.exam-grid{grid-template-columns:1fr}}
+  .card-soft{background:#fff;border:1px solid var(--stroke);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+  .timeline{position:relative;padding-left:16px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:rgba(15,23,42,.12);border-radius:2px}
+  .step{position:relative;margin:10px 0}
+  .step::before{content:"";position:absolute;left:-10px;top:4px;width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--primary),var(--primary-2));box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+  .deliver-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(max-width:700px){.deliver-grid{grid-template-columns:1fr}}
+  .deliver{display:flex;align-items:flex-start;gap:10px;border:1px dashed rgba(15,23,42,.12);border-radius:12px;padding:10px;background:#fafbff}
+  .deliver .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(90deg,var(--primary),var(--primary-2));color:#fff;font-weight:800}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .kpi{background:#fff;border:1px solid var(--stroke);border-radius:12px;padding:12px;text-align:center}
+  .kpi b{font-size:20px}
+  .kpi small{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- ===== INTRO CLAIRE ===== -->
+<div class="intro" id="intro" aria-hidden="true">
+  <button class="intro-skip" id="introSkip">Passer ✕</button>
+  <div class="particles" id="particles"></div>
+  <div class="intro-sheen" aria-hidden="true"></div>
+  <div class="intro-inner">
+    <div class="intro-name">Léo Techer</div>
+    <div class="intro-role">BTS SIO — Option SISR</div>
+    <div class="intro-type" aria-label="PORTFOLIO">PORTFOLIO</div>
+    <div class="intro-progress"><div class="bar"></div></div>
+  </div>
+</div>
+
+<!-- ====== HEADER ====== -->
+<header class="site-header">
+  <div class="nav-shell">
+    <div class="nav-wrap">
+      <a class="brand" href="#profil"><div class="logo">LT</div>
+        <div><strong>Léo Techer</strong><br><small>BTS SIO — SISR</small></div>
+      </a>
+
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="nav" class="nav">
+        <div class="nav-indicator" id="navIndicator" aria-hidden="true"></div>
+        <a href="#profil">Profil</a>
+        <a href="#bts">BTS SIO</a>
+        <a href="#parcours">Parcours</a>
+        <a href="#stages">Stages</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#epreuve">Épreuve</a>
+        <a href="#veille">Veille</a>
+        <a href="#certifs">Certifications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ===== PROFIL ===== -->
+  <section id="profil">
+    <h1>Profil</h1>
+
+    <div class="profile-hero">
+      <div class="avatar">LT</div>
+      <div class="id">
+        <h3>Léo Techer</h3>
+        <div class="sub">BTS SIO — Option SISR</div>
+        <div class="tags">
+          <span class="tag">Systèmes & Réseaux</span>
+          <span class="tag">Cybersécurité</span>
+          <span class="tag">Support N1/N2</span>
+          <span class="tag">GLPI / ITIL</span>
+        </div>
+      </div>
+      <div class="actions">
+        <a href="#contact" class="btn primary">Me contacter</a>
+        <a href="#parcours" class="btn ghost">Voir mon CV</a>
+      </div>
+    </div>
+
+    <div class="profile-panels">
+      <div class="card">
+        <h3 style="margin-top:0">À propos de moi</h3>
+        <p>Je suis un jeune passionné par l’informatique et les nouvelles technologies. Actuellement en BTS SIO, je développe mes compétences dans la gestion de projets informatiques, le développement d’applications et l’administration des systèmes et réseaux.</p>
+        <div class="tags" style="margin-top:10px">
+          <span class="chip">Windows / Linux</span><span class="chip">AD / DNS / DHCP</span><span class="chip">VLAN / Routage</span><span class="chip">Virtualisation</span><span class="chip">Sauvegardes</span><span class="chip">Shell / PowerShell</span>
+        </div>
+        <div class="mini-stats" style="margin-top:12px">
+          <div class="mini"><b>19</b><br><small>ans</small></div>
+          <div class="mini"><b>2</b><br><small>stages</small></div>
+          <div class="mini"><b>+8</b><br><small>projets</small></div>
+        </div>
+      </div>
+
+      <div class="card skills">
+        <h3 style="margin-top:0">Compétences clés</h3>
+        <div class="skill"><div class="row"><span>Administration systèmes</span><span>85%</span></div><div class="bar"><div class="fill" style="--val:85%"></div></div></div>
+        <div class="skill"><div class="row"><span>Réseaux / VLAN / DHCP</span><span>80%</span></div><div class="bar"><div class="fill" style="--val:80%"></div></div></div>
+        <div class="skill"><div class="row"><span>Cybersécurité (durcissement)</span><span>70%</span></div><div class="bar"><div class="fill" style="--val:70%"></div></div></div>
+        <div class="skill"><div class="row"><span>GLPI / Support</span><span>85%</span></div><div class="bar"><div class="fill" style="--val:85%"></div></div></div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Mes qualités</h3>
+        <ul style="margin:6px 0 0 16px">
+          <li>Organisé & rigoureux</li>
+          <li>Curieux et motivé</li>
+          <li>Adaptation rapide</li>
+          <li>Apprentissage continu</li>
+        </ul>
+        <div class="tags" style="margin-top:12px">
+          <span class="badge">Esprit d’équipe</span><span class="badge">Autonomie</span><span class="badge">Documentation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BTS ===== -->
+  <section id="bts">
+    <h2>BTS SIO</h2>
+    <div class="card">
+      <p>Le <strong>BTS Services Informatiques aux Organisations</strong> forme en 2 ans aux métiers de l’IT. Deux options : <strong>SISR</strong> (infrastructures, systèmes & réseaux) et <strong>SLAM</strong> (développement d’applications & bases de données).</p>
+      <div class="tabbar" role="tablist" aria-label="Choisir l’option">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="sisr">SISR (mon option)</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="slam">SLAM</button>
+      </div>
+    </div>
+    <div class="bts-grid">
+      <div class="card track" id="tab-sisr" data-open="true">
+        <h3 style="margin-top:0">SISR — Solutions d’Infrastructure, Systèmes & Réseaux ✅</h3>
+        <p class="pill">Administration • Sécurité • Supervision</p>
+        <ul>
+          <li>Installer, configurer et maintenir des serveurs et services (AD, partages…)</li>
+          <li>Sécuriser postes & infra (MAJ, sauvegardes, droits, durcissement)</li>
+          <li>Superviser et dépanner (support N1/N2, scripts, documentation)</li>
+        </ul>
+      </div>
+      <div class="card track" id="tab-slam" data-open="false">
+        <h3 style="margin-top:0">SLAM — Solutions Logicielles & Applications Métiers</h3>
+        <p class="pill" style="background:#e0f2fe;color:#075985">Conception • Développement • Bases</p>
+        <ul>
+          <li>Analyser le besoin, modéliser (UML)</li>
+          <li>Développer front/back, APIs, base de données</li>
+          <li>Tests, déploiement, documentation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PARCOURS ===== -->
+  <section id="parcours">
+    <h2>Parcours</h2>
+    <ul><li>Baccalauréat …</li><li>BTS SIO …</li></ul>
+    <div class="card" style="margin-top:10px">
+      <h3 style="margin-top:0">Mon CV</h3>
+      <button id="toggleCv" class="cv-toggle">📄 Voir mon CV</button>
+      <div id="cvContainer">
+        <img src="cv.png" alt="CV de Léo Techer" style="width:100%; border-radius:12px; margin-top:12px; border:1px solid var(--stroke); box-shadow:var(--shadow)">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STAGES ===== -->
+  <section id="stages">
+    <h2>Stages</h2>
+    <div class="card">
+      <details class="stage-acc">
+        <summary><span class="chev">▸</span> Stage 1 — (Entreprise, dates)</summary>
+        <div style="margin-top:10px">
+          <h4>Contexte & missions</h4><p>Administration parc, maintenance serveurs, support N1/N2, ticketing GLPI.</p>
+          <h4>Infrastructure & locaux</h4>
+          <div class="gallery">
+            <img src="stage1-batiment.jpg" alt="Bâtiment" data-full="stage1-batiment.jpg">
+            <img src="stage1-serveur1.jpg" alt="Baie" data-full="stage1-serveur1.jpg">
+            <img src="stage1-serveur2.jpg" alt="Serveur" data-full="stage1-serveur2.jpg">
+          </div>
+          <h4>Poste de travail</h4>
+          <div class="gallery">
+            <img src="stage1-poste1.jpg" alt="Poste" data-full="stage1-poste1.jpg">
+            <img src="stage1-poste2.jpg" alt="Console admin" data-full="stage1-poste2.jpg">
+          </div>
+          <h4>Ticketing GLPI</h4>
+          <div class="gallery">
+            <img src="glpi-ticket-liste.png" alt="Liste tickets" data-full="glpi-ticket-liste.png">
+            <img src="glpi-ticket-detail.png" alt="Détail ticket" data-full="glpi-ticket-detail.png">
+            <img src="glpi-ticket-nouveau.png" alt="Création" data-full="glpi-ticket-nouveau.png">
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details class="stage-acc">
+        <summary><span class="chev">▸</span> Stage 2 — (Entreprise, dates)</summary>
+        <div style="margin-top:10px">
+          <h4>Contexte & missions</h4><p>Supervision, durcissement, sauvegardes, MAJ, support N2, documentation, GLPI.</p>
+          <h4>Infrastructure & locaux</h4>
+          <div class="gallery">
+            <img src="stage2-batiment.jpg" alt="Bâtiment" data-full="stage2-batiment.jpg">
+            <img src="stage2-serveur1.jpg" alt="Baie" data-full="stage2-serveur1.jpg">
+            <img src="stage2-serveur2.jpg" alt="Serveur" data-full="stage2-serveur2.jpg">
+          </div>
+          <h4>Poste de travail</h4>
+          <div class="gallery">
+            <img src="stage2-poste1.jpg" alt="Poste" data-full="stage2-poste1.jpg">
+            <img src="stage2-poste2.jpg" alt="Console admin" data-full="stage2-poste2.jpg">
+          </div>
+          <h4>Ticketing GLPI</h4>
+          <div class="gallery">
+            <img src="glpi2-ticket-liste.png" alt="Liste tickets" data-full="glpi2-ticket-liste.png">
+            <img src="glpi2-ticket-detail.png" alt="Détail ticket" data-full="glpi2-ticket-detail.png">
+            <img src="glpi2-ticket-nouveau.png" alt="Création" data-full="glpi2-ticket-nouveau.png">
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="lb" id="lightbox"><button class="lb-close" id="lbClose">Fermer ✕</button><img alt="Agrandissement"></div>
+  </section>
+
+  <!-- ===== REALISATIONS ===== -->
+  <section id="realisations">
+    <h2>Mes réalisations</h2>
+    <div class="card">Projet 1 — Site web</div>
+    <div class="card">Projet 2 — Application</div>
+  </section>
+
+  <!-- ===== EPREUVE — intégré E5/E6 ===== -->
+  <section id="epreuve">
+    <h2>Épreuve</h2>
+
+    <div class="exam">
+      <div class="exam-tabs" role="tablist" aria-label="Choisir l’épreuve">
+        <button class="exam-tab active" role="tab" aria-selected="true" data-exam="e5">E5 — Présentation</button>
+        <button class="exam-tab" role="tab" aria-selected="false" data-exam="e6">E6 — Présentation</button>
+      </div>
+
+      <div class="exam-panels">
+        <!-- E5 -->
+        <article id="panel-e5" class="exam-panel" role="tabpanel" aria-labelledby="tab-e5">
+          <div class="exam-header">
+            <h3 class="exam-title">E5 — Mise en situation professionnelle (SISR)</h3>
+            <div class="exam-badges">
+              <span class="badge-pill">Administrer & sécuriser</span>
+              <span class="badge-pill">Dossier + Soutenance</span>
+              <span class="badge-pill">~30 min</span>
+            </div>
+          </div>
+
+          <div class="exam-grid">
+            <div class="card-soft">
+              <h4 style="margin-top:0">Présentation</h4>
+              <p>L’épreuve <strong>E5</strong> évalue la capacité à <strong>déployer, administrer et sécuriser</strong> une infrastructure (postes, serveurs, services réseau) à partir de besoins réels rencontrés en stage / projet. Elle s’appuie sur une <strong>mise en situation</strong> présentée à l’oral et documentée dans un dossier.</p>
+              <div class="timeline">
+                <div class="step"><strong>Analyse du contexte</strong> — périmètre, risques, objectifs.</div>
+                <div class="step"><strong>Conception & préparation</strong> — architecture cible, choix techniques.</div>
+                <div class="step"><strong>Réalisation</strong> — mises en place (AD, DNS/DHCP, sauvegardes, durcissement).</div>
+                <div class="step"><strong>Validation</strong> — tests, supervision, plan de retour arrière.</div>
+                <div class="step"><strong>Restitution</strong> — dossier + soutenance.</div>
+              </div>
+            </div>
+
+            <div class="card-soft">
+              <h4 style="margin-top:0">Livrables</h4>
+              <div class="deliver-grid">
+                <div class="deliver"><div class="ic">📘</div><div><b>Dossier E5 (PDF)</b><br>Architecture, procédures (installation, sauvegardes), GPO, scripts, supervision.</div></div>
+                <div class="deliver"><div class="ic">🗂️</div><div><b>Annexes techniques</b><br>Captures AD/DNS/DHCP, schémas IP/VLAN, plan de sauvegarde (3-2-1-1-0).</div></div>
+                <div class="deliver"><div class="ic">🧪</div><div><b>Plan de tests</b><br>Checklists & résultats (dispo service, restauration, droits).</div></div>
+                <div class="deliver"><div class="ic">🎤</div><div><b>Support de soutenance</b><br>Slides synthétiques (problématique → solution → bénéfices).</div></div>
+              </div>
+              <div class="kpis" style="margin-top:12px">
+                <div class="kpi"><b>2</b><br><small>services déployés</small></div>
+                <div class="kpi"><b>4</b><br><small>procédures documentées</small></div>
+                <div class="kpi"><b>100%</b><br><small>tests OK</small></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- E6 -->
+        <article id="panel-e6" class="exam-panel" role="tabpanel" aria-labelledby="tab-e6" hidden>
+          <div class="exam-header">
+            <h3 class="exam-title">E6 — Parcours professionnel & projet</h3>
+            <div class="exam-badges">
+              <span class="badge-pill">Dossier de synthèse</span>
+              <span class="badge-pill">Portfolio & expériences</span>
+              <span class="badge-pill">Entretien</span>
+            </div>
+          </div>
+
+          <div class="exam-grid">
+            <div class="card-soft">
+              <h4 style="margin-top:0">Présentation</h4>
+              <p>L’épreuve <strong>E6</strong> valorise le <strong>parcours</strong> : stages, réalisations, veille, certifications et compétences acquises. Tu présentes ton <strong>projet professionnel</strong>, tes objectifs et l’adéquation des expériences avec les attentes du métier (SISR).</p>
+              <div class="timeline">
+                <div class="step"><strong>Portfolio & CV</strong> — expériences, projets, preuves.</div>
+                <div class="step"><strong>Veille & certifs</strong> — sujets suivis, impacts, acquis.</div>
+                <div class="step"><strong>Analyse réflexive</strong> — difficultés, solutions, enseignements.</div>
+                <div class="step"><strong>Projet pro</strong> — court terme / moyen terme, plan d’action.</div>
+              </div>
+            </div>
+
+            <div class="card-soft">
+              <h4 style="margin-top:0">Livrables</h4>
+              <div class="deliver-grid">
+                <div class="deliver"><div class="ic">📄</div><div><b>Dossier E6 (PDF)</b><br>Parcours, compétences, preuves (captures, liens), analyse et objectifs.</div></div>
+                <div class="deliver"><div class="ic">🧩</div><div><b>Tableau de compétences</b><br>Cartographie (admin systèmes, réseaux, sécu, support…).</div></div>
+                <div class="deliver"><div class="ic">🔗</div><div><b>Portfolio en ligne</b><br>Réalisations + veille (avec liens vérifiables).</div></div>
+                <div class="deliver"><div class="ic">🎯</div><div><b>Plan d’évolution</b><br>Cibles (certifs, alternance, postes), jalons & délais.</div></div>
+              </div>
+              <div class="kpis" style="margin-top:12px">
+                <div class="kpi"><b>2</b><br><small>stages valorisés</small></div>
+                <div class="kpi"><b>4+</b><br><small>certifications/chapitres</small></div>
+                <div class="kpi"><b>1</b><br><small>projet pro structuré</small></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VEILLE ===== -->
+  <section id="veille">
+    <h2>Veille</h2>
+    <div class="card">
+      <details class="acc" open>
+        <summary>Veille technologique <span class="chev">▸</span></summary>
+        <div class="acc-body" data-veil-list>
+          <div class="acc-list">
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Edge AI : exécution locale de modèles compacts</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">IA</span> <span class="tag">Edge</span></div><p style="margin:6px 0 0;color:#475569">NPU intégrés et cas d’usages offline.</p></div></div>
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Plateformes serverless 2.0</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">Cloud</span> <span class="tag">Serverless</span></div><p style="margin:6px 0 0;color:#475569">Froids réduits, nouvelles limites mémoire.</p></div></div>
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Virtualisation légère : microVM</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">Infra</span> <span class="tag">Sécurité</span></div><p style="margin:6px 0 0;color:#475569">Isolation renforcée multi-tenant.</p></div></div>
+            <div class="acc-item hidden"><div><a href="#" target="_blank" rel="noopener"><strong>Observabilité unifiée (OTel + eBPF)</strong></a><div class="acc-meta"><span>2024</span> • <span class="tag">DevOps</span> <span class="tag">eBPF</span></div><p style="margin:6px 0 0;color:#475569">Traçage, métriques, logs & profilage.</p></div></div>
+            <div class="acc-item hidden"><div><a href="#" target="_blank" rel="noopener"><strong>Post-quantique : premiers déploiements</strong></a><div class="acc-meta"><span>2024</span> • <span class="tag">Crypto</span> <span class="tag">Sécurité</span></div><p style="margin:6px 0 0;color:#475569">Impacts sur PKI et terminaux.</p></div></div>
+          </div>
+          <button class="acc-more" type="button">Voir plus d’articles</button>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details class="acc">
+        <summary>Veille cybersécurité <span class="chev">▸</span></summary>
+        <div class="acc-body" data-veil-list>
+          <div class="acc-list">
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Ransomware : TTPs 2025</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">Threats</span> <span class="tag">SOC</span></div><p style="margin:6px 0 0;color:#475569">MFA fatigue, abuse EDR, exfil multi-sauts.</p></div></div>
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Durcissement AD & endpoints</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">Windows</span> <span class="tag">AD</span></div><p style="margin:6px 0 0;color:#475569">Tiering, LAPS, ASR Rules, GPOs clés.</p></div></div>
+            <div class="acc-item"><div><a href="#" target="_blank" rel="noopener"><strong>Détection réseau : NDR + TLS fingerprints</strong></a><div class="acc-meta"><span>2025</span> • <span class="tag">NDR</span> <span class="tag">DFIR</span></div><p style="margin:6px 0 0;color:#475569">DNS/Netflow + JA3/JA4.</p></div></div>
+            <div class="acc-item hidden"><div><a href="#" target="_blank" rel="noopener"><strong>Backups immuables & PRA</strong></a><div class="acc-meta"><span>2024</span> • <span class="tag">Backup</span> <span class="tag">Résilience</span></div><p style="margin:6px 0 0;color:#475569">3-2-1-1-0, tests de restauration.</p></div></div>
+            <div class="acc-item hidden"><div><a href="#" target="_blank" rel="noopener"><strong>Gestion des secrets & SBOM</strong></a><div class="acc-meta"><span>2024</span> • <span class="tag">DevSecOps</span> <span class="tag">Supply chain</span></div><p style="margin:6px 0 0;color:#475569">Rotation, scans, signatures.</p></div></div>
+          </div>
+          <button class="acc-more" type="button">Voir plus d’articles</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFS ===== -->
+  <section id="certifs">
+    <h2>Certifications</h2>
+    <div class="cert-toolbar">
+      <button class="cert-filter active" data-filter="all">Toutes</button>
+      <button class="cert-filter" data-filter="obtained">Obtenues</button>
+      <button class="cert-filter" data-filter="pending">En cours</button>
+    </div>
+    <div class="cert-grid" id="certGrid">
+      <article class="cert-card" data-status="obtained" aria-expanded="false">
+        <div class="cert-ribbon">OBTENUE</div>
+        <div class="cert-head">
+          <div class="cert-logo"><img src="logos/cisco.png" alt="Cisco" style="width:100%;height:100%;object-fit:cover"></div>
+          <div><div class="cert-title">Cisco IT Essentials</div><div class="cert-issuer">Cisco Networking Academy • 2024</div></div>
+        </div>
+        <div class="cert-tags"><span class="ctag">Hardware</span><span class="ctag">Réseaux</span><span class="ctag">Dépannage</span></div>
+        <div class="cert-body">Installation matérielle, diagnostic, OS de base, sécurité poste, procédures de support.</div>
+        <div class="cert-foot"><span style="color:#64748b;font-size:12px">ID : #CIS-IT-123456</span><button class="cert-btn" data-action="toggle">Détails</button></div>
+      </article>
+
+      <article class="cert-card" data-status="obtained" aria-expanded="false">
+        <div class="cert-ribbon">OBTENUE</div>
+        <div class="cert-head">
+          <div class="cert-logo"><img src="logos/azure.png" alt="Azure" style="width:100%;height:100%;object-fit:cover"></div>
+          <div><div class="cert-title">Microsoft AZ-900 — Fundamentals</div><div class="cert-issuer">Microsoft • 2025</div></div>
+        </div>
+        <div class="cert-tags"><span class="ctag">Cloud</span><span class="ctag">Azure</span><span class="ctag">Fondamentaux</span></div>
+        <div class="cert-body">Concepts cloud, modèles de services, coûts, SLA, sécurité, conformité et gouvernance.</div>
+        <div class="cert-foot"><span style="color:#64748b;font-size:12px">Score : 8xx/1000</span><button class="cert-btn" data-action="toggle">Détails</button></div>
+      </article>
+
+      <article class="cert-card" data-status="pending" aria-expanded="false">
+        <div class="cert-ribbon pending">EN COURS</div>
+        <div class="cert-head">
+          <div class="cert-logo"><img src="logos/linux.png" alt="Linux" style="width:100%;height:100%;object-fit:cover"></div>
+          <div><div class="cert-title">Linux Essentials</div><div class="cert-issuer">LPI • 2025 (prévu)</div></div>
+        </div>
+        <div class="cert-tags"><span class="ctag">Linux</span><span class="ctag">CLI</span><span class="ctag">Scripting</span></div>
+        <div class="cert-body">Commandes de base, fichiers/permissions, processus, réseau, scripts simples.</div>
+        <div class="cert-foot"><span style="color:#64748b;font-size:12px">Prochaine session : déc. 2025</span><button class="cert-btn" data-action="toggle">Détails</button></div>
+      </article>
+
+      <article class="cert-card" data-status="pending" aria-expanded="false">
+        <div class="cert-ribbon pending">EN COURS</div>
+        <div class="cert-head">
+          <div class="cert-logo"><img src="logos/cyber.png" alt="Cyber" style="width:100%;height:100%;object-fit:cover"></div>
+          <div><div class="cert-title">Introduction à la Cybersécurité</div><div class="cert-issuer">Cisco Networking Academy • 2025</div></div>
+        </div>
+        <div class="cert-tags"><span class="ctag">Sécurité</span><span class="ctag">Menaces</span><span class="ctag">Bonnes pratiques</span></div>
+        <div class="cert-body">Principes de base, menaces courantes, hygiène numérique, sensibilisation utilisateurs.</div>
+        <div class="cert-foot"><span style="color:#64748b;font-size:12px">Progression : ~70%</span><button class="cert-btn" data-action="toggle">Détails</button></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-grid">
+      <div class="card" style="position:relative">
+        <h3 style="margin-top:0">Discutons 👋</h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0">
+          <button id="copyEmail" class="btn primary">📧 Copier mon email</button>
+          <a class="btn ghost" href="tel:+33000000000">📱 Appeler</a>
+          <a class="btn ghost" href="https://wa.me/33000000000" target="_blank" rel="noopener">💬 WhatsApp</a>
+        </div>
+        <div style="display:grid; gap:6px">
+          <div><strong>Email</strong> : <a id="mailLink" href="mailto:youremail@example.com">youremail@example.com</a></div>
+          <div><strong>Localisation</strong> : France</div>
+          <div class="availability"><span id="localTime">--:--</span> · généralement dispo 9h–18h</div>
+        </div>
+        <div id="copyToast" style="position:absolute;left:12px;bottom:12px;background:#ecfeff;border:1px solid var(--stroke);padding:8px 10px;border-radius:10px;color:#0e7490;display:none">Email copié ✅</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Écris-moi un message</h3>
+        <form id="contactForm" novalidate>
+          <input type="text" id="company" name="company" style="position:absolute;left:-9999px" tabindex="-1" aria-hidden="true" />
+          <div class="field"><input type="text" id="name" required placeholder=" " /><label for="name">Ton nom</label><div class="error">Ton nom est requis</div></div>
+          <div class="field"><input type="email" id="email" required placeholder=" " /><label for="email">Ton email</label><div class="error">Entre un email valide</div></div>
+          <div class="field"><input type="text" id="subject" required placeholder=" " /><label for="subject">Sujet</label><div class="error">Le sujet est requis</div></div>
+          <div class="field">
+            <textarea id="message" rows="6" maxlength="1200" required placeholder=" "></textarea>
+            <label for="message">Ton message</label>
+            <div style="display:flex;justify-content:space-between">
+              <div class="error">Le message est requis</div>
+              <div style="font-size:12px;color:var(--muted)"><span id="msgCount">0</span>/1200</div>
+            </div>
+          </div>
+          <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="consent" required /> J’accepte d’être contacté par email.</label>
+          <div class="error" id="consentErr">Tu dois accepter pour envoyer.</div>
+          <button type="submit" class="btn primary" style="width:100%;margin-top:10px">✉️ Envoyer</button>
+          <p style="color:var(--muted);font-size:12px;margin:8px 0 0">L’envoi ouvre ton client mail avec le message prérempli.</p>
+        </form>
+        <div id="formSuccess" class="success">🎉 Merci ! Ton client mail va s’ouvrir. Si ce n’est pas le cas, écris-moi à <a href="mailto:youremail@example.com">youremail@example.com</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© <span id="year"></span> Léo Techer — Portfolio</footer>
+</main>
+
+<script>
+  // Année
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Reveal sections
+  const sections = document.querySelectorAll("section");
+  const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.15});
+  sections.forEach(s=>io.observe(s));
+
+  // ===== INTRO CLAIRE JS =====
+  (function(){
+    const intro = document.getElementById('intro');
+    const skip = document.getElementById('introSkip');
+    const particles = document.getElementById('particles');
+
+    // Génère des particules pastel
+    const N = 28;
+    const classes = ['','p1','p2','p3'];
+    for(let i=0;i<N;i++){
+      const d = document.createElement('span');
+      d.className = 'dot ' + classes[Math.floor(Math.random()*classes.length)];
+      d.style.left = (Math.random()*100)+'%';
+      d.style.animationDelay = (Math.random()*0.9).toFixed(2)+'s';
+      d.style.animationDuration = (2.3 + Math.random()*2.2).toFixed(2)+'s';
+      d.style.setProperty('--dx', (Math.random()*120 - 60).toFixed(0)+'px');
+      particles.appendChild(d);
+    }
+
+    const close = ()=>{ if(!intro.classList.contains('hide')) intro.classList.add('hide'); };
+    skip?.addEventListener('click', close);
+    setTimeout(close, 2700);
+    setTimeout(()=>['wheel','touchstart','keydown','click'].forEach(t=>window.addEventListener(t, close, {once:true,passive:true})), 300);
+  })();
+
+  // Burger + nav open/close
+  (function(){
+    const burger=document.querySelector('.nav-toggle');
+    const nav=document.getElementById('nav');
+    burger.addEventListener('click', ()=>{
+      const open=burger.getAttribute('aria-expanded')==='true';
+      burger.setAttribute('aria-expanded', String(!open));
+      nav.classList.toggle('open', !open);
+    });
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{
+      burger.setAttribute('aria-expanded','false'); nav.classList.remove('open');
+    }));
+  })();
+
+  // Active link + indicateur glissant
+  (function(){
+    const links=[...document.querySelectorAll('.nav a')];
+    const indicator=document.getElementById('navIndicator');
+    const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    function moveIndicator(el){
+      if(!el || !indicator) return;
+      const r=el.getBoundingClientRect();
+      const rWrap=el.parentElement.getBoundingClientRect();
+      indicator.style.left=(r.left - rWrap.left) + 'px';
+      indicator.style.width=r.width + 'px';
+      indicator.style.opacity='1';
+    }
+    function setActive(){
+      const y=scrollY + 140;
+      let cur=null;
+      for(const s of secs){ if(s.offsetTop <= y) cur=s; }
+      links.forEach(a=>{
+        const active = cur && a.getAttribute('href')==='#'+cur.id;
+        a.classList.toggle('is-active', active);
+        if(active) moveIndicator(a);
+      });
+    }
+    setActive(); moveIndicator(links[0]);
+    addEventListener('scroll', setActive, {passive:true});
+    addEventListener('resize', ()=>{ const a=document.querySelector('.nav a.is-active')||links[0]; moveIndicator(a); });
+    if(!matchMedia('(pointer:coarse)').matches){
+      links.forEach(a=>{
+        a.addEventListener('mouseenter', ()=>moveIndicator(a));
+        a.addEventListener('mouseleave', ()=>{
+          const act=document.querySelector('.nav a.is-active')||links[0];
+          moveIndicator(act);
+        });
+      });
+    }
+  })();
+
+  // CV toggle
+  (function(){
+    const btn=document.getElementById('toggleCv'), box=document.getElementById('cvContainer');
+    if(!btn||!box) return; let open=false;
+    const img=box.querySelector('img'); const fit=()=>{ box.style.maxHeight=open ? (box.scrollHeight+'px') : '0px'; };
+    img?.addEventListener('load', ()=> open && fit());
+    btn.addEventListener('click', ()=>{ open=!open; fit(); btn.textContent=open?'❌ Fermer mon CV':'📄 Voir mon CV'; });
+  })();
+
+  // Lightbox
+  (function(){
+    const lb=document.getElementById('lightbox'), img=lb.querySelector('img'), close=()=>lb.classList.remove('open');
+    document.querySelectorAll('.gallery img').forEach(i=> i.addEventListener('click', ()=>{ img.src=i.getAttribute('data-full')||i.src; lb.classList.add('open'); }));
+    document.getElementById('lbClose').addEventListener('click', close);
+    lb.addEventListener('click', e=>{ if(e.target===lb) close(); });
+    addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+  })();
+
+  // BTS tabs
+  (function(){
+    const tabs=document.querySelectorAll('.tabbar .tab');
+    const panels={ sisr:document.getElementById('tab-sisr'), slam:document.getElementById('tab-slam') };
+    tabs.forEach(t=>t.addEventListener('click', ()=>{
+      const k=t.dataset.tab;
+      tabs.forEach(b=>{ const active=b===t; b.classList.toggle('active',active); b.setAttribute('aria-selected',active) });
+      Object.entries(panels).forEach(([key,el])=> el.setAttribute('data-open', key===k));
+    }));
+  })();
+
+  // Certifications filtres + toggle
+  (function(){
+    const grid=document.getElementById('certGrid');
+    document.querySelectorAll('.cert-filter').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const f=btn.dataset.filter||'all';
+        document.querySelectorAll('.cert-filter').forEach(b=>b.classList.toggle('active', b===btn));
+        grid.querySelectorAll('.cert-card').forEach(card=>{
+          card.style.display = (f==='all' || card.getAttribute('data-status')===f) ? '' : 'none';
+        });
+      });
+    });
+    grid.addEventListener('click', e=>{
+      const b=e.target.closest('[data-action="toggle"]'); if(!b) return;
+      const card=b.closest('.cert-card'); const open=card.getAttribute('aria-expanded')==='true';
+      card.setAttribute('aria-expanded', open?'false':'true'); b.textContent=open?'Détails':'Masquer';
+    });
+  })();
+
+  // Contact
+  (function(){
+    const timeEl=document.getElementById('localTime');
+    const tick=()=>{ const d=new Date(); timeEl.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+    tick(); setInterval(tick,30000);
+    const copyBtn=document.getElementById('copyEmail'), toast=document.getElementById('copyToast'), mail=document.getElementById('mailLink');
+    copyBtn.addEventListener('click', async ()=>{
+      const email=(mail.getAttribute('href')||'').replace('mailto:','')||'youremail@example.com';
+      try{
+        if(navigator.clipboard && isSecureContext){ await navigator.clipboard.writeText(email); }
+        else{ const i=document.createElement('input'); i.value=email; document.body.appendChild(i); i.select(); document.execCommand('copy'); i.remove(); }
+        toast.style.display='block'; setTimeout(()=>toast.style.display='none',1300);
+      }catch(e){ prompt("Copie l'email :", email); }
+    });
+    const form=document.getElementById('contactForm'), success=document.getElementById('formSuccess');
+    const hp=document.getElementById('company'), name=document.getElementById('name'), email=document.getElementById('email'), subject=document.getElementById('subject'), message=document.getElementById('message'), consent=document.getElementById('consent'), consentErr=document.getElementById('consentErr'), msgCount=document.getElementById('msgCount');
+    const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); message.addEventListener('input', ()=> msgCount.textContent=String(message.value.length));
+    const clear=el=>{ el.classList.remove('invalid'); const e=el.parentElement.querySelector('.error'); if(e) e.style.display='none'; };
+    [name,email,subject,message].forEach(el=> el.addEventListener('input', ()=>clear(el)));
+    form.addEventListener('submit', e=>{
+      e.preventDefault(); success.classList.remove('show'); if(hp.value.trim()) return;
+      let ok=true;
+      if(!name.value.trim()){ name.classList.add('invalid'); name.parentElement.querySelector('.error').style.display='block'; ok=false; }
+      if(!email.value.trim()||!isEmail(email.value.trim())){ email.classList.add('invalid'); email.parentElement.querySelector('.error').style.display='block'; ok=false; }
+      if(!subject.value.trim()){ subject.classList.add('invalid'); subject.parentElement.querySelector('.error').style.display='block'; ok=false; }
+      if(!message.value.trim()){ message.classList.add('invalid'); message.parentElement.querySelector('.error').style.display='block'; ok=false; }
+      if(!consent.checked){ consentErr.style.display='block'; ok=false; } else consentErr.style.display='none';
+      if(!ok) return;
+      const to=(mail.getAttribute('href')||'mailto:youremail@example.com').replace('mailto:','');
+      const body=`Bonjour,%0D%0A%0D%0A${encodeURIComponent(message.value)}%0D%0A%0D%0A— ${encodeURIComponent(name.value)}%0D%0AEmail : ${encodeURIComponent(email.value)}`;
+      const url=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject.value)}&body=${body}`;
+      success.classList.add('show'); window.open(url,'_self');
+    });
+  })();
+
+  // Veille "voir plus"
+  (function(){
+    document.querySelectorAll('[data-veil-list]').forEach(block=>{
+      const btn = block.querySelector('.acc-more');
+      if(!btn) return;
+      btn.addEventListener('click', ()=>{
+        block.querySelectorAll('.acc-item.hidden').forEach(el=> el.classList.remove('hidden'));
+        btn.remove();
+      });
+    });
+  })();
+
+  // ===== Tabs Épreuve E5/E6 =====
+  (function(){
+    const tabs = document.querySelectorAll('.exam-tab');
+    const panels = {
+      e5: document.getElementById('panel-e5'),
+      e6: document.getElementById('panel-e6')
+    };
+    if(!tabs.length) return;
+    tabs.forEach(tab=>{
+      tab.addEventListener('click', ()=>{
+        const key = tab.dataset.exam;
+        tabs.forEach(b=>{ b.classList.toggle('active', b===tab); b.setAttribute('aria-selected', b===tab ? 'true' : 'false'); });
+        Object.entries(panels).forEach(([k,el])=>{
+          el.hidden = (k!==key);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
